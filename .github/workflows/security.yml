@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Fix vulnerabilities
+        run: npm audit fix
+
       - name: Run ESLint (SAST)
         run: npx eslint .
 
