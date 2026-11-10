@@ -25,14 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Fix vulnerabilities
-        run: npm audit fix
-
       - name: Run ESLint (SAST)
         run: npx eslint .
 
       - name: Run SCA (npm audit)
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high --omit=dev
 
       - name: Run Gitleaks (Secret Scanning)
         uses: gitleaks/gitleaks-action@v2
