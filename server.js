@@ -98,12 +98,9 @@ app.get('/export', (req, res) => {
     return res.status(400).send('Invalid month format. Use YYYY-MM.');
   }
   const out = path.join(__dirname, `expenses-${month}.csv`);
-  execFile('sqlite3', [
-    path.join(__dirname, 'expenses.db'),
-    '.mode csv',
-    `.once ${out}`,
-    'SELECT * FROM claims'
-  ], (err) => {
+  
+  // DELIBERATE VULNERABILITY: Changed from execFile to exec
+  exec(`sqlite3 ${path.join(__dirname, 'expenses.db')} ".mode csv" ".once ${out}" "SELECT * FROM claims"`, (err) => {
     if (err) return res.status(500).send('Export failed.');
     res.download(out);
   });
