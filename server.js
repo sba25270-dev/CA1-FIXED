@@ -67,7 +67,7 @@ app.get('/logout', (req, res) => { res.clearCookie('token'); res.redirect('/logi
 
 app.get('/claim/:id', (req, res) => {
   const u = currentUser(req);  
-const row = db.prepare('SELECT * FROM claims WHERE id = ?').get(req.params.id);
+  const row = db.prepare('SELECT * FROM claims WHERE id = ?').get(req.params.id);
   if (!row) return res.status(404).send('Not found');
   if (!u || (row.user_id !== u.uid && u.role !== 'admin')) {
     return res.status(403).send('Forbidden');
@@ -98,6 +98,8 @@ app.get('/export', (req, res) => {
     return res.status(400).send('Invalid month format. Use YYYY-MM.');
   }
   const out = path.join(__dirname, `expenses-${month}.csv`);
+  
+  // FIXED VULNERABILITY: Reverted back to safe execFile
   execFile('sqlite3', [
     path.join(__dirname, 'expenses.db'),
     '.mode csv',
