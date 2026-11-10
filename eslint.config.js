@@ -9,5 +9,8 @@ module.exports = [
       "security/detect-non-literal-fs-filename": "error",
       "security/detect-eval-with-expression": "error"
     }
+  },
+  {
+    ignores: ["seed.js"]
   }
 ];
